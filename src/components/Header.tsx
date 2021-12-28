@@ -1,7 +1,8 @@
 import React from "react";
 
-const headerContainerStyle = {
+const headerContainerStyle: {} = {
   display: "flex",
+  position: "absolute",
 };
 
 const Header = () => {

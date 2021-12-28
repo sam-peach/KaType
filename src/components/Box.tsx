@@ -2,9 +2,9 @@ import React from "react";
 
 const boxStyle = (xPos: number, yPos: number): {} => {
   return {
+    position: "absolute",
     width: "50px",
     height: "50px",
-    position: "absolute",
     left: `${xPos - 25}px`,
     top: `${yPos - 25}px`,
     borderWidth: "4px",

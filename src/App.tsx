@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
 
-import LetterStream from "./components/LetterStream";
+import TempoType from "./components/TempoType";
+import StartScreen from "./components/StartScreen";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           justifyContent: "center",
         }}
       >
-        <LetterStream />
+        <TempoType />
       </div>
     </div>
   );

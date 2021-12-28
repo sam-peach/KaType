@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useCallback, KeyboardEvent } from "react";
+import { timer } from "d3";
 import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
-import { timer, interval } from "d3";
 import Box from "./Box";
-
-const INTERVAL_MS = 500;
-
-const containerStyle = {
-  display: "flex",
-};
+import ScoreBoard from "./ScoreBoard";
 
 const randomLetter = (offset: number) => {
   const characters = "abcdefghijklmnopqrstuvwxyz";
@@ -23,27 +18,21 @@ const bpmToMilliseconds = (bpm: number) => {
   return 1000 / (bpm / 60);
 };
 
-const LetterStream = () => {
+const LetterStream = ({ bpm }: { bpm: number }) => {
   const { innerWidth, innerHeight } = window;
 
+  const [ticks, setTicks] = useState<number>(0);
+  const [score, setScore] = useState<number>(0);
   const LETTER_ORIGIN = innerWidth / 4;
-
-  const [running, setRunning] = useState<boolean>(false);
-  const [bpm, setBpm] = useState<number>(120);
-
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
-  const [ticks, setTicks] = useState<number>(0);
-  const [score, setScore] = useState<number>(0);
 
   const handleKeypress = (e: KeyboardEvent) => {
     const letter = letterStream.find((x) => {
       const position = innerWidth - x.offset;
       return position <= innerWidth / 2 + 25 && position >= innerWidth / 2 - 25;
     });
-
-    console.log(letter);
 
     if (letter && e.key === letter.letter) {
       setScore(score + 1);
@@ -52,7 +41,6 @@ const LetterStream = () => {
 
   const moveLetters = useCallback(
     (elapsed: number) => {
-      console.log(letterStream[0]);
       let updatedLetters = letterStream;
       if (innerWidth - letterStream[0].offset <= innerWidth / 4) {
         updatedLetters = letterStream.slice(1);
@@ -83,24 +71,22 @@ const LetterStream = () => {
 
   return (
     <div
-      tabIndex={0}
-      onKeyDown={handleKeypress}
       style={{
         display: "flex",
-        justifySelf: "center",
+        flex: "1 0 100%",
+        flexDirection: "column",
+        height: "100%",
       }}
+      onKeyDown={handleKeypress}
+      tabIndex={0}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <ScoreBoard score={score} />
+      <div style={{ display: "flex", flex: "1 0 100%" }}>
         {letterStream.map((letter) => (
           <LetterWrapper letter={letter} yPos={innerHeight / 2} />
         ))}
-        <Box xPos={innerWidth / 2} yPos={innerHeight / 2} />
       </div>
+      <Box xPos={innerWidth / 2} yPos={innerHeight / 2} />
     </div>
   );
 };
