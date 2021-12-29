@@ -14,7 +14,8 @@ const containerStyle = {
   justifyContent: "center",
 };
 
-const Box = ({ xPos }: { xPos: number }) => {
+const Box = () => {
+  const { innerHeight, innerWidth } = window;
   return (
     <div style={containerStyle}>
       <span style={boxStyle}></span>

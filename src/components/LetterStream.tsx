@@ -4,6 +4,7 @@ import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
+import "./LetterStream.css";
 
 const randomLetter = (offset: number) => {
   const characters = "abcdefghijklmnopqrstuvwxyz";
@@ -30,9 +31,12 @@ const style = (transition: boolean): {} => {
   const fade = transition
     ? {
         opacity: 0,
-        transition: "opacity 0.5s 0.4s",
+        transition: "opacity 0.4s",
       }
-    : {};
+    : {
+        animation: "fadein 0.4s linear",
+        "-webkit-animation": "fadein 0.4s linear",
+      };
 
   return { ...base, ...fade };
 };
@@ -43,7 +47,7 @@ const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
 
   const [ticks, setTicks] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
-  const [remainingLetters, setRemainingLetters] = useState<number>(99);
+  const [remainingLetters, setRemainingLetters] = useState<number>(9);
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
@@ -113,7 +117,7 @@ const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
           />
         ))}
       </div>
-      <Box xPos={innerWidth / 2} />
+      <Box />
     </div>
   );
 };
