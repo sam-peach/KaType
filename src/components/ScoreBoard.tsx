@@ -5,11 +5,11 @@ const ScoreBoard = ({ score }: { score: number }) => {
     <div
       style={{
         display: "flex",
-        flex: "1 0%",
         justifyContent: "center",
         alignContent: "center",
         fontSize: "42px",
         textAlign: "center",
+        marginBottom: "4em",
       }}
     >
       <div>{score}</div>

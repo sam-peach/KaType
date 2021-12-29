@@ -1,20 +1,25 @@
 import React from "react";
 
-const boxStyle = (xPos: number, yPos: number): {} => {
-  return {
-    position: "absolute",
-    width: "50px",
-    height: "50px",
-    left: `${xPos - 25}px`,
-    top: `${yPos - 25}px`,
-    borderWidth: "4px",
-    borderStyle: "dashed solid",
-    borderRadius: "4px",
-  };
+const boxStyle = {
+  width: "50px",
+  height: "50px",
+  borderWidth: "4px",
+  borderStyle: "dashed solid",
+  borderRadius: "4px",
+  transform: "translate(0em, -0.5em)",
 };
 
-const Box = ({ xPos, yPos }: { xPos: number; yPos: number }) => {
-  return <div style={boxStyle(xPos, yPos)}></div>;
+const containerStyle = {
+  display: "flex",
+  justifyContent: "center",
+};
+
+const Box = ({ xPos }: { xPos: number }) => {
+  return (
+    <div style={containerStyle}>
+      <span style={boxStyle}></span>
+    </div>
+  );
 };
 
 export default Box;

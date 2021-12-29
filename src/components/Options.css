@@ -1,0 +1,17 @@
+.options-row {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  flex: 0 0 30%;
+}
+
+.options-row > :first-child {
+  margin-bottom: 0.5em;
+  flex: 1 1 100%;
+}
+
+.options-row > :nth-child(2) {
+  display: flex;
+  justify-content: center;
+  flex: 1 1 100%;
+}

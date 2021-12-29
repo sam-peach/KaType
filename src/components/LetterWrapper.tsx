@@ -9,7 +9,7 @@ const LetterWrapper = ({ letter, yPos }: { letter: Letter; yPos: number }) => {
       style={{
         position: "absolute",
         transform: `translate(${innerWidth - letter.offset}px, 0px)`,
-        top: `${yPos - 12}px`,
+        opacity: letter.color && letter.color === "success" ? 0.1 : 1,
       }}
     >
       {letter.letter}

@@ -18,12 +18,32 @@ const bpmToMilliseconds = (bpm: number) => {
   return 1000 / (bpm / 60);
 };
 
-const LetterStream = ({ bpm }: { bpm: number }) => {
+const style = (transition: boolean): {} => {
+  const base = {
+    display: "flex",
+    flex: "1 0 100%",
+    flexDirection: "column",
+    height: "100%",
+    outline: "none",
+  };
+
+  const fade = transition
+    ? {
+        opacity: 0,
+        transition: "opacity 0.5s 0.4s",
+      }
+    : {};
+
+  return { ...base, ...fade };
+};
+
+const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
   const { innerWidth, innerHeight } = window;
+  const LETTER_ORIGIN = innerWidth / 4;
 
   const [ticks, setTicks] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
-  const LETTER_ORIGIN = innerWidth / 4;
+  const [remainingLetters, setRemainingLetters] = useState<number>(99);
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
@@ -35,6 +55,7 @@ const LetterStream = ({ bpm }: { bpm: number }) => {
     });
 
     if (letter && e.key === letter.letter) {
+      letter.color = "success";
       setScore(score + 1);
     }
   };
@@ -49,16 +70,17 @@ const LetterStream = ({ bpm }: { bpm: number }) => {
         return { ...l, offset: l.offset + 3 };
       });
 
-      if (ticks >= bpmToMilliseconds(bpm)) {
+      if (ticks >= bpmToMilliseconds(bpm) && remainingLetters > 0) {
         const randLetter = randomLetter(LETTER_ORIGIN);
         setLetterStream([...updatedLetters, randLetter]);
         setTicks(0);
+        setRemainingLetters(remainingLetters - 1);
       } else {
         setLetterStream(updatedLetters);
         setTicks(ticks + elapsed);
       }
     },
-    [LETTER_ORIGIN, bpm, innerWidth, letterStream, ticks]
+    [LETTER_ORIGIN, bpm, innerWidth, letterStream, remainingLetters, ticks]
   );
 
   useEffect(() => {
@@ -69,24 +91,29 @@ const LetterStream = ({ bpm }: { bpm: number }) => {
     };
   }, [moveLetters]);
 
+  useEffect(() => {
+    document.getElementById("letter-stream")?.focus();
+  }, []);
+
   return (
     <div
-      style={{
-        display: "flex",
-        flex: "1 0 100%",
-        flexDirection: "column",
-        height: "100%",
-      }}
+      id="letter-stream"
+      style={style(remainingLetters === 0 && letterStream.length === 0)}
       onKeyDown={handleKeypress}
-      tabIndex={0}
+      tabIndex={-1}
+      onTransitionEnd={onStop}
     >
       <ScoreBoard score={score} />
-      <div style={{ display: "flex", flex: "1 0 100%" }}>
-        {letterStream.map((letter) => (
-          <LetterWrapper letter={letter} yPos={innerHeight / 2} />
+      <div>
+        {letterStream.map((letter, idx) => (
+          <LetterWrapper
+            key={`${letter}${idx}`}
+            letter={letter}
+            yPos={innerHeight / 2}
+          />
         ))}
       </div>
-      <Box xPos={innerWidth / 2} yPos={innerHeight / 2} />
+      <Box xPos={innerWidth / 2} />
     </div>
   );
 };

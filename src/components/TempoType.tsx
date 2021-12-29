@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import LetterStream from "./LetterStream";
+import Options from "./Options";
 import StartScreen from "./StartScreen";
 
 const TempoType = () => {
@@ -13,6 +14,7 @@ const TempoType = () => {
       style={{
         display: "flex",
         justifySelf: "center",
+        flexWrap: "wrap",
       }}
     >
       <div
@@ -25,7 +27,12 @@ const TempoType = () => {
         }}
       >
         {running ? (
-          <LetterStream bpm={bpm} />
+          <LetterStream
+            bpm={bpm}
+            onStop={() => {
+              setRunning(false);
+            }}
+          />
         ) : (
           <StartScreen
             afterStart={() => {
@@ -34,6 +41,7 @@ const TempoType = () => {
           />
         )}
       </div>
+      <Options />
     </div>
   );
 };
