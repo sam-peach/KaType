@@ -3,8 +3,14 @@ body,
 #root,
 .app {
   height: 100%;
+  outline: none;
+  user-select: none;
 }
 
 .test {
   justify-self: end;
+}
+
+div {
+  outline: none;
 }

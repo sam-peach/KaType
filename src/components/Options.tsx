@@ -5,11 +5,28 @@ const rowHeadingStyle = {
   marginBottom: "0.5em",
 };
 
-const Options = () => {
-  const [speedMultiplier, setSpeedMultiplier] = useState<number>(1.0);
+const MAX_SPEED_LIMIT = 3.0;
+const MIN_SPEED_LIMIT = 0.5;
 
+const Options = ({
+  speedMultiplier,
+  setSpeedMultiplier,
+  disabled,
+  highScore,
+}: {
+  speedMultiplier: number;
+  setSpeedMultiplier: (hewSpeed: number) => void;
+  disabled: boolean;
+  highScore: number;
+}) => {
   const handleSpeedMultiplierChange = (e: MouseEvent<HTMLElement>) => {
-    console.log((e.target as HTMLElement).innerHTML);
+    const target = (e.target as HTMLElement).textContent;
+
+    if (!disabled && target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
+      setSpeedMultiplier(speedMultiplier + 0.5);
+    } else if (target === "<" && speedMultiplier > MIN_SPEED_LIMIT) {
+      setSpeedMultiplier(speedMultiplier - 0.5);
+    }
   };
 
   return (
@@ -41,9 +58,9 @@ const Options = () => {
         </div>
       </div>
       <div className="options-row">
-        <div style={rowHeadingStyle}>Top score</div>
+        <div style={rowHeadingStyle}>High score</div>
         <div style={{ display: "flex", alignItems: "baseline" }}>
-          <span style={{ fontSize: "36px" }}>0.0</span>
+          <span style={{ fontSize: "36px" }}>{highScore.toFixed(1)}</span>
         </div>
       </div>
     </div>

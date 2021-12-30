@@ -41,13 +41,21 @@ const style = (transition: boolean): {} => {
   return { ...base, ...fade };
 };
 
-const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
+const LetterStream = ({
+  bpm,
+  onStop,
+  speedMultiplier,
+}: {
+  bpm: number;
+  onStop: (score: number) => void;
+  speedMultiplier: number;
+}) => {
   const { innerWidth, innerHeight } = window;
   const LETTER_ORIGIN = innerWidth / 4;
 
   const [ticks, setTicks] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
-  const [remainingLetters, setRemainingLetters] = useState<number>(9);
+  const [remainingLetters, setRemainingLetters] = useState<number>(59);
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
@@ -60,7 +68,7 @@ const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
 
     if (letter && e.key === letter.letter) {
       letter.color = "success";
-      setScore(score + 1);
+      setScore(score + 1 * speedMultiplier);
     }
   };
 
@@ -105,7 +113,7 @@ const LetterStream = ({ bpm, onStop }: { bpm: number; onStop: () => void }) => {
       style={style(remainingLetters === 0 && letterStream.length === 0)}
       onKeyDown={handleKeypress}
       tabIndex={-1}
-      onTransitionEnd={onStop}
+      onTransitionEnd={() => onStop(score)}
     >
       <ScoreBoard score={score} />
       <div>

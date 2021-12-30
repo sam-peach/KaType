@@ -7,6 +7,8 @@ import StartScreen from "./StartScreen";
 const TempoType = () => {
   const [running, setRunning] = useState<boolean>(false);
   const [bpm, setBpm] = useState<number>(120);
+  const [speedMultiplier, setSpeedMultiplier] = useState<number>(1.0);
+  const [highScore, setHighScore] = useState<number>(0.0);
 
   return (
     <div
@@ -28,8 +30,12 @@ const TempoType = () => {
       >
         {running ? (
           <LetterStream
-            bpm={bpm}
-            onStop={() => {
+            bpm={bpm * speedMultiplier}
+            speedMultiplier={speedMultiplier}
+            onStop={(score: number) => {
+              if (score > highScore) {
+                setHighScore(score);
+              }
               setRunning(false);
             }}
           />
@@ -41,7 +47,12 @@ const TempoType = () => {
           />
         )}
       </div>
-      <Options />
+      <Options
+        speedMultiplier={speedMultiplier}
+        setSpeedMultiplier={setSpeedMultiplier}
+        disabled={running}
+        highScore={highScore}
+      />
     </div>
   );
 };

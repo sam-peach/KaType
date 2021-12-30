@@ -1,4 +1,4 @@
-import React, { useState, useEffect, KeyboardEvent } from "react";
+import React, { useState, useEffect } from "react";
 
 const fadeOut = {
   opacity: 0,
@@ -10,10 +10,8 @@ const style = { alignSelf: "center", outline: "none" };
 const StartScreen = ({ afterStart }: { afterStart: () => void }) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === " ") {
-      setClicked(true);
-    }
+  const handleClick = () => {
+    setClicked(true);
   };
 
   useEffect(() => {
@@ -24,11 +22,11 @@ const StartScreen = ({ afterStart }: { afterStart: () => void }) => {
     <div
       id="start-screen"
       tabIndex={-1}
-      onKeyDown={handleKeyDown}
+      onClick={handleClick}
       onTransitionEnd={afterStart}
       style={clicked ? { ...style, ...fadeOut } : style}
     >
-      Press space bar to begin
+      Click here to begin
     </div>
   );
 };
