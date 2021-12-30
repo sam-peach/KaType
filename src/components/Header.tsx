@@ -9,7 +9,7 @@ const headerContainerStyle: {} = {
 const Header = () => {
   return (
     <div style={headerContainerStyle}>
-      <div>_Tempotype</div>
+      <div>_ttype</div>
     </div>
   );
 };
