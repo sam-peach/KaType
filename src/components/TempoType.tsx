@@ -1,14 +1,19 @@
 import React, { useState } from "react";
+import { GameLength } from "../utils";
 
 import LetterStream from "./LetterStream";
 import Options from "./Options";
 import StartScreen from "./StartScreen";
 
+const BASE_BPM = 120;
+
 const TempoType = () => {
   const [running, setRunning] = useState<boolean>(false);
-  const [bpm, setBpm] = useState<number>(120);
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(1.0);
   const [highScore, setHighScore] = useState<number>(0.0);
+  const [gameLength, setGameLength] = useState<GameLength>(
+    GameLength.ShortMedium
+  );
 
   return (
     <div
@@ -30,8 +35,9 @@ const TempoType = () => {
       >
         {running ? (
           <LetterStream
-            bpm={bpm * speedMultiplier}
+            bpm={BASE_BPM * speedMultiplier}
             speedMultiplier={speedMultiplier}
+            gameLength={gameLength}
             onStop={(score: number) => {
               if (score > highScore) {
                 setHighScore(score);
@@ -52,6 +58,8 @@ const TempoType = () => {
         setSpeedMultiplier={setSpeedMultiplier}
         disabled={running}
         highScore={highScore}
+        gameLength={gameLength}
+        setGameLength={setGameLength}
       />
     </div>
   );

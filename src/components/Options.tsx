@@ -1,4 +1,5 @@
-import React, { useState, MouseEvent } from "react";
+import React, { useCallback, MouseEvent } from "react";
+import { GameLength } from "../utils";
 import "./Options.css";
 
 const rowHeadingStyle = {
@@ -13,21 +14,41 @@ const Options = ({
   setSpeedMultiplier,
   disabled,
   highScore,
+  gameLength,
+  setGameLength,
 }: {
   speedMultiplier: number;
   setSpeedMultiplier: (hewSpeed: number) => void;
   disabled: boolean;
   highScore: number;
+  gameLength: GameLength;
+  setGameLength: (val: GameLength) => void;
 }) => {
-  const handleSpeedMultiplierChange = (e: MouseEvent<HTMLElement>) => {
-    const target = (e.target as HTMLElement).textContent;
+  const handleSpeedMultiplierChange = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      const target = (e.target as HTMLElement).textContent;
 
-    if (!disabled && target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
-      setSpeedMultiplier(speedMultiplier + 0.5);
-    } else if (target === "<" && speedMultiplier > MIN_SPEED_LIMIT) {
-      setSpeedMultiplier(speedMultiplier - 0.5);
-    }
-  };
+      if (!disabled && target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
+        setSpeedMultiplier(speedMultiplier + 0.5);
+      } else if (target === "<" && speedMultiplier > MIN_SPEED_LIMIT) {
+        setSpeedMultiplier(speedMultiplier - 0.5);
+      }
+    },
+    [disabled, setSpeedMultiplier, speedMultiplier]
+  );
+
+  const handleGameLengthChange = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      const target = (e.target as HTMLElement).textContent;
+
+      if (!disabled && target === ">" && gameLength < GameLength.Long) {
+        setGameLength(gameLength + 30);
+      } else if (target === "<" && gameLength > GameLength.Short) {
+        setGameLength(gameLength - 30);
+      }
+    },
+    [disabled, gameLength, setGameLength]
+  );
 
   return (
     <div
@@ -53,6 +74,18 @@ const Options = ({
             onClick={handleSpeedMultiplierChange}
             style={{ marginLeft: "0.75em" }}
           >
+            {">"}
+          </span>
+        </div>
+      </div>
+      <div className="options-row">
+        <div style={rowHeadingStyle}>Game length</div>
+        <div style={{ display: "flex", alignItems: "baseline" }}>
+          <span onClick={handleGameLengthChange} style={{ marginRight: "1em" }}>
+            {"<"}
+          </span>
+          <span style={{ fontSize: "36px" }}>{gameLength}</span>
+          <span onClick={handleGameLengthChange} style={{ marginLeft: "1em" }}>
             {">"}
           </span>
         </div>

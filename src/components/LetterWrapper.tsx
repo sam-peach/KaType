@@ -13,6 +13,14 @@ const LetterWrapper = ({ letter, yPos }: { letter: Letter; yPos: number }) => {
       }}
     >
       {letter.letter}
+      <span
+        style={{
+          height: "10px",
+          width: "10px",
+          backgroundColor: "red",
+          transform: `translate(${innerWidth - letter.offset}px, 0px)`,
+        }}
+      ></span>
     </div>
   );
 };

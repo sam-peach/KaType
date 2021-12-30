@@ -5,14 +5,15 @@ import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
 import "./LetterStream.css";
+import { GameLength } from "../utils";
 
 const randomLetter = (offset: number) => {
   const characters = "abcdefghijklmnopqrstuvwxyz";
   const letter = characters.charAt(
-    Math.floor(Math.random() * characters.length)
+    Math.floor(((Math.random() + Math.random()) / 2) * characters.length)
   );
 
-  return { letter, offset };
+  return { letter, offset, disabled: false };
 };
 
 const bpmToMilliseconds = (bpm: number) => {
@@ -45,17 +46,21 @@ const LetterStream = ({
   bpm,
   onStop,
   speedMultiplier,
+  gameLength,
 }: {
   bpm: number;
   onStop: (score: number) => void;
   speedMultiplier: number;
+  gameLength: GameLength;
 }) => {
   const { innerWidth, innerHeight } = window;
   const LETTER_ORIGIN = innerWidth / 4;
 
   const [ticks, setTicks] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
-  const [remainingLetters, setRemainingLetters] = useState<number>(59);
+  const [remainingLetters, setRemainingLetters] = useState<number>(
+    gameLength - 1
+  );
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
@@ -66,8 +71,9 @@ const LetterStream = ({
       return position <= innerWidth / 2 + 25 && position >= innerWidth / 2 - 25;
     });
 
-    if (letter && e.key === letter.letter) {
+    if (letter && e.key === letter.letter && !letter.disabled) {
       letter.color = "success";
+      letter.disabled = true;
       setScore(score + 1 * speedMultiplier);
     }
   };
@@ -115,8 +121,8 @@ const LetterStream = ({
       tabIndex={-1}
       onTransitionEnd={() => onStop(score)}
     >
-      <ScoreBoard score={score} />
       <div>
+        <ScoreBoard score={score} />
         {letterStream.map((letter, idx) => (
           <LetterWrapper
             key={`${letter}${idx}`}

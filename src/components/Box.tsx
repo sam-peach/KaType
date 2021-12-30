@@ -15,7 +15,6 @@ const containerStyle = {
 };
 
 const Box = () => {
-  const { innerHeight, innerWidth } = window;
   return (
     <div style={containerStyle}>
       <span style={boxStyle}></span>
