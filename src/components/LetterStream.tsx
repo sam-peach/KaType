@@ -4,7 +4,6 @@ import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
-import "./LetterStream.css";
 import { GameLength } from "../utils";
 
 const randomLetter = (offset: number) => {
@@ -64,6 +63,7 @@ const LetterStream = ({
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
     randomLetter(LETTER_ORIGIN),
   ]);
+  const [shouldStop, setShouldStop] = useState<boolean>(false);
 
   const handleKeypress = (e: KeyboardEvent) => {
     const letter = letterStream.find((x) => {
@@ -114,25 +114,58 @@ const LetterStream = ({
     document.getElementById("letter-stream")?.focus();
   }, []);
 
+  useEffect(() => {
+    if (remainingLetters === 0 && letterStream.length === 0) {
+      setShouldStop(true);
+    }
+  }, [letterStream.length, remainingLetters]);
+
   return (
     <div
-      id="letter-stream"
-      style={style(remainingLetters === 0 && letterStream.length === 0)}
-      onKeyDown={handleKeypress}
-      tabIndex={-1}
-      onTransitionEnd={() => onStop(score)}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+        flex: "1 0 100%",
+        height: "350px",
+      }}
     >
-      <div>
-        <ScoreBoard score={score} />
-        {letterStream.map((letter, idx) => (
-          <LetterWrapper
-            key={`${letter}${idx}`}
-            letter={letter}
-            yPos={innerHeight / 2}
-          />
-        ))}
+      <div
+        id="letter-stream"
+        style={style(shouldStop)}
+        onKeyDown={handleKeypress}
+        tabIndex={-1}
+        onTransitionEnd={(e) => {
+          if ((e.target as HTMLElement).id !== "reset-button") {
+            onStop(score);
+          }
+        }}
+      >
+        <div>
+          <ScoreBoard score={score} />
+          {letterStream.map((letter, idx) => (
+            <LetterWrapper
+              key={`${letter}${idx}`}
+              letter={letter}
+              yPos={innerHeight / 2}
+            />
+          ))}
+        </div>
+        <Box />
+        <div
+          id="reset-button"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "5em",
+          }}
+          onClick={() => {
+            setShouldStop(true);
+          }}
+        >
+          <div>reset</div>
+        </div>
       </div>
-      <Box />
     </div>
   );
 };

@@ -1,32 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import Options from "./Options";
+import { GameLength } from "../utils";
 
-const fadeOut = {
-  opacity: 0,
-  transition: "opacity 0.5s 0.4s",
+const style = (shouldFade: boolean): {} => {
+  const base = {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  };
+
+  const fade = shouldFade
+    ? {
+        opacity: 0,
+        transition: "opacity 0.6s",
+      }
+    : { animation: "fadein", "-webkit-animation": "fadein 0.4s linear" };
+
+  return { ...base, ...fade };
 };
 
-const style = { alignSelf: "center", outline: "none" };
-
-const StartScreen = ({ afterStart }: { afterStart: () => void }) => {
+const StartScreen = ({
+  afterStart,
+  speedMultiplier,
+  setSpeedMultiplier,
+  running,
+  highScore,
+  gameLength,
+  setGameLength,
+}: {
+  afterStart: () => void;
+  speedMultiplier: number;
+  setSpeedMultiplier: (hewSpeed: number) => void;
+  running: boolean;
+  highScore: number;
+  gameLength: GameLength;
+  setGameLength: (val: GameLength) => void;
+}) => {
   const [clicked, setClicked] = useState<boolean>(false);
-
-  const handleClick = () => {
-    setClicked(true);
-  };
 
   useEffect(() => {
     document.getElementById("start-screen")?.focus();
   }, []);
 
   return (
-    <div
-      id="start-screen"
-      tabIndex={-1}
-      onClick={handleClick}
-      onTransitionEnd={afterStart}
-      style={clicked ? { ...style, ...fadeOut } : style}
-    >
-      Click here to begin
+    <div style={style(clicked)} onTransitionEnd={afterStart}>
+      <div
+        id="start-screen"
+        onClick={() => setClicked(true)}
+        style={{ marginBottom: "1em" }}
+      >
+        Click here to begin
+      </div>
+      <Options
+        speedMultiplier={speedMultiplier}
+        setSpeedMultiplier={setSpeedMultiplier}
+        highScore={highScore}
+        gameLength={gameLength}
+        setGameLength={setGameLength}
+      />
     </div>
   );
 };

@@ -12,14 +12,14 @@ const MIN_SPEED_LIMIT = 0.5;
 const Options = ({
   speedMultiplier,
   setSpeedMultiplier,
-  disabled,
+
   highScore,
   gameLength,
   setGameLength,
 }: {
   speedMultiplier: number;
   setSpeedMultiplier: (hewSpeed: number) => void;
-  disabled: boolean;
+
   highScore: number;
   gameLength: GameLength;
   setGameLength: (val: GameLength) => void;
@@ -28,26 +28,26 @@ const Options = ({
     (e: MouseEvent<HTMLElement>) => {
       const target = (e.target as HTMLElement).textContent;
 
-      if (!disabled && target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
+      if (target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
         setSpeedMultiplier(speedMultiplier + 0.1);
       } else if (target === "<" && speedMultiplier > MIN_SPEED_LIMIT) {
         setSpeedMultiplier(speedMultiplier - 0.1);
       }
     },
-    [disabled, setSpeedMultiplier, speedMultiplier]
+    [setSpeedMultiplier, speedMultiplier]
   );
 
   const handleGameLengthChange = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       const target = (e.target as HTMLElement).textContent;
 
-      if (!disabled && target === ">" && gameLength < GameLength.Long) {
+      if (target === ">" && gameLength < GameLength.Long) {
         setGameLength(gameLength + 30);
       } else if (target === "<" && gameLength > GameLength.Short) {
         setGameLength(gameLength - 30);
       }
     },
-    [disabled, gameLength, setGameLength]
+    [gameLength, setGameLength]
   );
 
   return (
