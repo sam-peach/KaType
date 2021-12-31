@@ -12,9 +12,13 @@ code {
     monospace;
 }
 
-/* html,
-body,
-#app,
-#app > div {
-  height: 100%;
-} */
+@font-face {
+  font-family: "Fira Code";
+  src: local("Fira Code"), url(./fonts/FiraCode-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-weight: 900;
+  src: local("Fira Code"), url(./fonts/FiraCode-Bold.ttf) format("truetype");
+}
