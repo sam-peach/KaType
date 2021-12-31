@@ -29,9 +29,9 @@ const Options = ({
       const target = (e.target as HTMLElement).textContent;
 
       if (!disabled && target === ">" && speedMultiplier < MAX_SPEED_LIMIT) {
-        setSpeedMultiplier(speedMultiplier + 0.5);
+        setSpeedMultiplier(speedMultiplier + 0.1);
       } else if (target === "<" && speedMultiplier > MIN_SPEED_LIMIT) {
-        setSpeedMultiplier(speedMultiplier - 0.5);
+        setSpeedMultiplier(speedMultiplier - 0.1);
       }
     },
     [disabled, setSpeedMultiplier, speedMultiplier]

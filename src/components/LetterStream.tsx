@@ -74,7 +74,8 @@ const LetterStream = ({
     if (letter && e.key === letter.letter && !letter.disabled) {
       letter.color = "success";
       letter.disabled = true;
-      setScore(score + 1 * speedMultiplier);
+      const newScore = score + 1 * speedMultiplier;
+      setScore(Number(newScore.toFixed(2)));
     }
   };
 
