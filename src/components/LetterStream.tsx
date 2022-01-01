@@ -1,24 +1,10 @@
 import React, { useState, useEffect, useCallback, KeyboardEvent } from "react";
-import { timer, interval } from "d3";
+import { timer } from "d3";
 import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
-import { GameLength } from "../utils";
-import { access } from "fs";
-
-const randomLetter = (offset: number) => {
-  const characters = "abcdefghijklmnopqrstuvwxyz";
-  const letter = characters.charAt(
-    Math.floor(((Math.random() + Math.random()) / 2) * characters.length)
-  );
-
-  return { letter, offset, disabled: false };
-};
-
-const bpmToMilliseconds = (bpm: number) => {
-  return 1000 / (bpm / 60);
-};
+import { GameLength, randomLetter, bpmToMilliseconds } from "../utils";
 
 const style = (transition: boolean): {} => {
   const base = {
