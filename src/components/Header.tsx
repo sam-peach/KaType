@@ -3,7 +3,7 @@ import React from "react";
 const headerContainerStyle: {} = {
   display: "flex",
   position: "absolute",
-  margin: "1em",
+  margin: "0.5em 0.75em",
   fontSize: "1.5em",
 };
 
