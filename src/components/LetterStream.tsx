@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback, KeyboardEvent } from "react";
-import { timer } from "d3";
+import { timer, interval } from "d3";
 import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
 import { GameLength } from "../utils";
+import { access } from "fs";
 
 const randomLetter = (offset: number) => {
   const characters = "abcdefghijklmnopqrstuvwxyz";
@@ -66,9 +67,13 @@ const LetterStream = ({
   const [shouldStop, setShouldStop] = useState<boolean>(false);
 
   const handleKeypress = (e: KeyboardEvent) => {
-    const letter = letterStream.find((x) => {
-      const position = innerWidth - x.offset;
-      return position <= innerWidth / 2 + 25 && position >= innerWidth / 2 - 25;
+    const letter = letterStream.find((l) => {
+      const position = innerWidth - l.offset;
+      return (
+        !l.disabled &&
+        position <= innerWidth / 2 + 40 &&
+        position >= innerWidth / 2 - 40
+      );
     });
 
     if (letter && e.key === letter.letter && !letter.disabled) {
@@ -81,13 +86,19 @@ const LetterStream = ({
 
   const moveLetters = useCallback(
     (elapsed: number) => {
-      let updatedLetters = letterStream;
-      if (innerWidth - letterStream[0].offset <= innerWidth / 4) {
-        updatedLetters = letterStream.slice(1);
-      }
-      updatedLetters = updatedLetters.map((l) => {
-        return { ...l, offset: l.offset + 3 };
-      });
+      const updatedLetters = letterStream.reduce<Array<Letter>>(
+        (accum, letter, idx) => {
+          if (
+            idx === 0 &&
+            innerWidth - letterStream[0].offset <= innerWidth / 4
+          ) {
+            return accum;
+          }
+
+          return [...accum, { ...letter, offset: letter.offset + 3 }];
+        },
+        []
+      );
 
       if (ticks >= bpmToMilliseconds(bpm) && remainingLetters > 0) {
         const randLetter = randomLetter(LETTER_ORIGIN);
@@ -153,17 +164,21 @@ const LetterStream = ({
         </div>
         <Box />
         <div
-          id="reset-button"
           style={{
             display: "flex",
             justifyContent: "center",
             marginTop: "5em",
           }}
-          onClick={() => {
-            setShouldStop(true);
-          }}
         >
-          <div>reset</div>
+          <div
+            id="reset-button"
+            onClick={() => {
+              setShouldStop(true);
+            }}
+            style={{ fontWeight: 400 }}
+          >
+            reset
+          </div>
         </div>
       </div>
     </div>

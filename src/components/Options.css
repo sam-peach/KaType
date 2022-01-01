@@ -8,10 +8,12 @@
 .options-row > :first-child {
   margin-bottom: 0.5em;
   flex: 1 1 100%;
+  font-weight: 400;
 }
 
 .options-row > :nth-child(2) {
   display: flex;
   justify-content: center;
   flex: 1 1 100%;
+  font-weight: 400;
 }

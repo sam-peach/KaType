@@ -5,6 +5,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-weight: 600;
   font-size: 24px;
+  background-color: #2a334e;
+  color: #ffd76a;
 }
 
 code {
@@ -20,7 +22,13 @@ code {
 @font-face {
   font-family: "Fira Code";
   font-weight: 900;
-  src: local("Fira Code"), url(./fonts/FiraCode-Bold.ttf) format("truetype");
+  src: local("Fira Code"), url(./fonts/FiraCode-SemiBold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-weight: 400;
+  src: local("Fira Code"), url(./fonts/FiraCode-Regular.ttf) format("truetype");
 }
 
 @keyframes fadein {
@@ -38,5 +46,5 @@ code {
 }
 
 #reset-button:hover {
-  text-decoration: underline solid black;
+  text-decoration: underline solid;
 }

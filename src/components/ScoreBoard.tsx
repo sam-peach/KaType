@@ -10,6 +10,7 @@ const ScoreBoard = ({ score }: { score: number }) => {
         fontSize: "42px",
         textAlign: "center",
         marginBottom: "2em",
+        fontWeight: 900,
       }}
     >
       <div>{score}</div>

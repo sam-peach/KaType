@@ -4,6 +4,7 @@ const headerContainerStyle: {} = {
   display: "flex",
   position: "absolute",
   margin: "1em",
+  fontSize: "1.5em",
 };
 
 const Header = () => {
