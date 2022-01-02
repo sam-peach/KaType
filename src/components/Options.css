@@ -1,19 +1,18 @@
-.options-row {
+/* .options-row {
   display: flex;
   flex-wrap: wrap;
   text-align: center;
   flex: 0 0 30%;
-}
+} */
 
-.options-row > :first-child {
-  margin-bottom: 0.5em;
-  flex: 1 1 100%;
-  font-weight: 400;
-}
-
-.options-row > :nth-child(2) {
+.options-row {
   display: flex;
-  justify-content: center;
-  flex: 1 1 100%;
-  font-weight: 400;
+  flex: 1 0 100%;
+  justify-content: space-evenly;
+  margin-bottom: 2em;
+}
+
+svg {
+  padding: 0;
+  margin: 0;
 }

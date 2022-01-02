@@ -7,6 +7,8 @@ const style = (shouldFade: boolean): {} => {
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
+    flex: "0 0 75%",
+    paddingTop: "5em",
   };
 
   const fade = shouldFade
@@ -47,7 +49,7 @@ const StartScreen = ({
       <div
         id="start-screen"
         onClick={() => setClicked(true)}
-        style={{ marginBottom: "1em" }}
+        style={{ marginBottom: "5em" }}
       >
         Click here to begin
       </div>

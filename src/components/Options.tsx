@@ -1,10 +1,8 @@
 import React, { useCallback, MouseEvent } from "react";
-import { GameLength } from "../utils";
+import { GameLength, getNextGameLength } from "../utils";
 import "./Options.css";
-
-const rowHeadingStyle = {
-  marginBottom: "0.5em",
-};
+import Option from "./Option";
+import { CgInfinity } from "react-icons/cg";
 
 const MAX_SPEED_LIMIT = 3.0;
 const MIN_SPEED_LIMIT = 0.5;
@@ -41,27 +39,27 @@ const Options = ({
     (e: MouseEvent<HTMLElement>) => {
       const target = (e.target as HTMLElement).textContent;
 
-      if (target === ">" && gameLength < GameLength.Long) {
-        setGameLength(gameLength + 30);
+      if (target === ">" && gameLength < GameLength.Infinite) {
+        const nextGameLength = getNextGameLength({
+          gameLength,
+          type: "increase",
+        });
+        setGameLength(nextGameLength as GameLength);
       } else if (target === "<" && gameLength > GameLength.Short) {
-        setGameLength(gameLength - 30);
+        const nextGameLength = getNextGameLength({
+          gameLength,
+          type: "decrease",
+        });
+        setGameLength(nextGameLength as GameLength);
       }
     },
     [gameLength, setGameLength]
   );
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flex: "1 0 100%",
-        justifyContent: "center",
-        paddingTop: "4em",
-      }}
-    >
+    <>
       <div className="options-row">
-        <div style={rowHeadingStyle}>Speed</div>
-        <div style={{ display: "flex", alignItems: "baseline" }}>
+        <Option heading="Speed">
           <span
             onClick={handleSpeedMultiplierChange}
             style={{ marginRight: "0.75em" }}
@@ -76,27 +74,28 @@ const Options = ({
           >
             {">"}
           </span>
-        </div>
-      </div>
-      <div className="options-row">
-        <div style={rowHeadingStyle}>Game length</div>
-        <div style={{ display: "flex", alignItems: "baseline" }}>
+        </Option>
+        <Option heading={"Game length"}>
           <span onClick={handleGameLengthChange} style={{ marginRight: "1em" }}>
             {"<"}
           </span>
-          <span style={{ fontSize: "36px" }}>{gameLength}</span>
+          <span style={{ fontSize: "36px" }}>
+            {gameLength === GameLength.Infinite ? (
+              <CgInfinity strokeWidth={0.5} />
+            ) : (
+              gameLength
+            )}
+          </span>
           <span onClick={handleGameLengthChange} style={{ marginLeft: "1em" }}>
             {">"}
           </span>
-        </div>
-      </div>
-      <div className="options-row">
-        <div style={rowHeadingStyle}>High score</div>
-        <div style={{ display: "flex", alignItems: "baseline" }}>
+        </Option>
+
+        <Option heading={"High score"}>
           <span style={{ fontSize: "36px" }}>{highScore.toFixed(1)}</span>
-        </div>
+        </Option>
       </div>
-    </div>
+    </>
   );
 };
 
