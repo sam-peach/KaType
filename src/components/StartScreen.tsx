@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Options from "./Options";
-import { GameLength } from "../utils";
 
 const style = (shouldFade: boolean): {} => {
   const base = {
@@ -8,7 +7,7 @@ const style = (shouldFade: boolean): {} => {
     flexWrap: "wrap",
     justifyContent: "center",
     flex: "0 0 75%",
-    paddingTop: "5em",
+    paddingTop: "30vh",
   };
 
   const fade = shouldFade
@@ -29,14 +28,18 @@ const StartScreen = ({
   highScore,
   gameLength,
   setGameLength,
+  letterPattern,
+  setLetterPattern,
 }: {
   afterStart: () => void;
   speedMultiplier: number;
   setSpeedMultiplier: (hewSpeed: number) => void;
   running: boolean;
   highScore: number;
-  gameLength: GameLength;
-  setGameLength: (val: GameLength) => void;
+  gameLength: number;
+  setGameLength: (val: number) => void;
+  letterPattern: string;
+  setLetterPattern: (val: string) => void;
 }) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
@@ -49,7 +52,7 @@ const StartScreen = ({
       <div
         id="start-screen"
         onClick={() => setClicked(true)}
-        style={{ marginBottom: "5em" }}
+        style={{ marginBottom: "3em", fontSize: "36px" }}
       >
         Click here to begin
       </div>
@@ -59,6 +62,8 @@ const StartScreen = ({
         highScore={highScore}
         gameLength={gameLength}
         setGameLength={setGameLength}
+        letterPattern={letterPattern}
+        setLetterPattern={setLetterPattern}
       />
     </div>
   );

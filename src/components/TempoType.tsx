@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { GameLength } from "../utils";
+
+import { GAME_LENGTHS, LETTER_PATTERNS } from "../utils";
 import LetterStream from "./LetterStream";
 import StartScreen from "./StartScreen";
 
@@ -16,8 +17,11 @@ const TempoType = () => {
   const [running, setRunning] = useState<boolean>(false);
   const [speedMultiplier, setSpeedMultiplier] = useState<number>(1.0);
   const [highScore, setHighScore] = useState<number>(0.0);
-  const [gameLength, setGameLength] = useState<GameLength>(
-    GameLength.ShortMedium
+  const [gameLength, setGameLength] = useState<number>(
+    GAME_LENGTHS.ShortMedium
+  );
+  const [letterPattern, setLetterPattern] = useState<string>(
+    LETTER_PATTERNS.Random
   );
 
   return (
@@ -26,6 +30,7 @@ const TempoType = () => {
         <LetterStream
           bpm={BASE_BPM * speedMultiplier}
           speedMultiplier={speedMultiplier}
+          letterPattern={letterPattern}
           gameLength={gameLength}
           onStop={(score: number) => {
             if (score > highScore) {
@@ -43,6 +48,8 @@ const TempoType = () => {
           highScore={highScore}
           gameLength={gameLength}
           setGameLength={setGameLength}
+          letterPattern={letterPattern}
+          setLetterPattern={setLetterPattern}
         />
       )}
     </div>

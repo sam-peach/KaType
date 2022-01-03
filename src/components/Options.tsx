@@ -1,26 +1,30 @@
 import React, { useCallback, MouseEvent } from "react";
-import { GameLength, getNextGameLength } from "../utils";
+import { GAME_LENGTHS, LETTER_PATTERNS, buildObjectIterator } from "../utils";
 import "./Options.css";
 import Option from "./Option";
 import { CgInfinity } from "react-icons/cg";
 
 const MAX_SPEED_LIMIT = 3.0;
 const MIN_SPEED_LIMIT = 0.5;
+const gameLengthIterator = buildObjectIterator(GAME_LENGTHS);
+const letterPatternIterator = buildObjectIterator(LETTER_PATTERNS);
 
 const Options = ({
   speedMultiplier,
   setSpeedMultiplier,
-
   highScore,
   gameLength,
   setGameLength,
+  letterPattern,
+  setLetterPattern,
 }: {
   speedMultiplier: number;
   setSpeedMultiplier: (hewSpeed: number) => void;
-
   highScore: number;
-  gameLength: GameLength;
-  setGameLength: (val: GameLength) => void;
+  gameLength: number;
+  setGameLength: (val: number) => void;
+  letterPattern: string;
+  setLetterPattern: (val: string) => void;
 }) => {
   const handleSpeedMultiplierChange = useCallback(
     (e: MouseEvent<HTMLElement>) => {
@@ -39,26 +43,43 @@ const Options = ({
     (e: MouseEvent<HTMLElement>) => {
       const target = (e.target as HTMLElement).textContent;
 
-      if (target === ">" && gameLength < GameLength.Infinite) {
-        const nextGameLength = getNextGameLength({
-          gameLength,
-          type: "increase",
-        });
-        setGameLength(nextGameLength as GameLength);
-      } else if (target === "<" && gameLength > GameLength.Short) {
-        const nextGameLength = getNextGameLength({
-          gameLength,
-          type: "decrease",
-        });
-        setGameLength(nextGameLength as GameLength);
+      if (target === ">") {
+        setGameLength(gameLengthIterator.next());
+      } else if (target === "<") {
+        setGameLength(gameLengthIterator.prev());
       }
     },
-    [gameLength, setGameLength]
+    [setGameLength]
+  );
+
+  const handleLetterPatternChange = useCallback(
+    (e: MouseEvent<HTMLElement>) => {
+      const target = (e.target as HTMLElement).textContent;
+
+      if (target === ">") {
+        setLetterPattern(letterPatternIterator.next());
+      } else if (target === "<") {
+        setLetterPattern(letterPatternIterator.prev());
+      }
+    },
+    [setLetterPattern]
   );
 
   return (
     <>
-      <div className="options-row">
+      <div className="options-row" style={{ marginBottom: "8vh" }}>
+        <Option heading={"High score"}>
+          <span style={{ fontSize: "36px" }}>{highScore.toFixed(1)}</span>
+        </Option>
+      </div>
+      <div
+        className="options-row"
+        style={{
+          borderTop: "2px dashed #ffd76a",
+          padding: "8vh",
+          flex: "0 1 80%",
+        }}
+      >
         <Option heading="Speed">
           <span
             onClick={handleSpeedMultiplierChange}
@@ -80,7 +101,7 @@ const Options = ({
             {"<"}
           </span>
           <span style={{ fontSize: "36px" }}>
-            {gameLength === GameLength.Infinite ? (
+            {gameLength === GAME_LENGTHS.Infinite ? (
               <CgInfinity strokeWidth={0.5} />
             ) : (
               gameLength
@@ -90,9 +111,20 @@ const Options = ({
             {">"}
           </span>
         </Option>
-
-        <Option heading={"High score"}>
-          <span style={{ fontSize: "36px" }}>{highScore.toFixed(1)}</span>
+        <Option heading="Letter pattern">
+          <span
+            onClick={handleLetterPatternChange}
+            style={{ marginRight: "0.75em" }}
+          >
+            {"<"}
+          </span>
+          <span style={{ fontSize: "24px" }}>{letterPattern}</span>
+          <span
+            onClick={handleLetterPatternChange}
+            style={{ marginLeft: "0.75em" }}
+          >
+            {">"}
+          </span>
         </Option>
       </div>
     </>

@@ -1,15 +1,7 @@
-/* .options-row {
-  display: flex;
-  flex-wrap: wrap;
-  text-align: center;
-  flex: 0 0 30%;
-} */
-
 .options-row {
   display: flex;
   flex: 1 0 100%;
-  justify-content: space-evenly;
-  margin-bottom: 2em;
+  justify-content: space-between;
 }
 
 svg {

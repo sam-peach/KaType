@@ -4,7 +4,7 @@ import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
-import { GameLength, randomLetter, bpmToMilliseconds } from "../utils";
+import { bpmToMilliseconds, randomLetter, nextBigram } from "../utils";
 
 const style = (transition: boolean): {} => {
   const base = {
@@ -33,14 +33,27 @@ const LetterStream = ({
   onStop,
   speedMultiplier,
   gameLength,
+  letterPattern,
 }: {
   bpm: number;
   onStop: (score: number) => void;
   speedMultiplier: number;
-  gameLength: GameLength;
+  gameLength: number;
+  letterPattern: string;
 }) => {
   const { innerWidth, innerHeight } = window;
-  const LETTER_ORIGIN = innerWidth / 4;
+  const letterGenerator = useCallback(
+    (currentLetter?: string): Letter => {
+      let letter = randomLetter();
+
+      if (currentLetter && letterPattern === "Bigrams" && Math.random() > 0.3) {
+        letter = nextBigram(currentLetter);
+      }
+
+      return { letter, offset: window.innerWidth / 4, disabled: false };
+    },
+    [letterPattern]
+  );
 
   const [ticks, setTicks] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
@@ -48,7 +61,7 @@ const LetterStream = ({
     gameLength - 1
   );
   const [letterStream, setLetterStream] = useState<Array<Letter>>([
-    randomLetter(LETTER_ORIGIN),
+    letterGenerator(),
   ]);
   const [shouldStop, setShouldStop] = useState<boolean>(false);
 
@@ -87,7 +100,9 @@ const LetterStream = ({
       );
 
       if (ticks >= bpmToMilliseconds(bpm) && remainingLetters > 0) {
-        const randLetter = randomLetter(LETTER_ORIGIN);
+        const randLetter = letterGenerator(
+          updatedLetters[updatedLetters.length - 1].letter
+        );
         setLetterStream([...updatedLetters, randLetter]);
         setTicks(0);
         setRemainingLetters(remainingLetters - 1);
@@ -96,7 +111,7 @@ const LetterStream = ({
         setTicks(ticks + elapsed);
       }
     },
-    [LETTER_ORIGIN, bpm, innerWidth, letterStream, remainingLetters, ticks]
+    [bpm, innerWidth, letterGenerator, letterStream, remainingLetters, ticks]
   );
 
   useEffect(() => {
