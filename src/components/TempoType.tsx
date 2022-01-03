@@ -8,7 +8,6 @@ const BASE_BPM = 120;
 
 const containerStyle: {} = {
   display: "flex",
-  justifySelf: "center",
   flexWrap: "wrap",
   justifyContent: "center",
 };
