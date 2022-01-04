@@ -74,7 +74,7 @@ export const randomLetter = () => {
 };
 
 export const randomPunctuation = () => {
-  const punctuation = "~=!{}|`()_&@[]^*;-%+";
+  const punctuation = ".,~=!{}|`()_<>/\\&@[]^*;-%+";
   const character = punctuation.charAt(
     Math.floor(((Math.random() + Math.random()) / 2) * punctuation.length)
   );

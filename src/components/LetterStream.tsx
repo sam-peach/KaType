@@ -53,7 +53,7 @@ const LetterStream = ({
   const { innerWidth, innerHeight } = window;
   const letterGenerator = useCallback(
     (currentLetter?: string): Letter => {
-      if (punctuation && Math.random() > 0.9) {
+      if (punctuation && Math.random() > 0.75) {
         return {
           letter: randomPunctuation(),
           offset: window.innerWidth / 4,
