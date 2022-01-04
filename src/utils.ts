@@ -1,6 +1,3 @@
-import { notDeepEqual } from "assert";
-import { Letter } from "./types/Letter";
-
 export const GAME_LENGTHS: { [key: string]: number } = {
   Short: 30,
   ShortMedium: 60,
