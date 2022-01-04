@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { GAME_LENGTHS, LETTER_PATTERNS } from "../utils";
 import LetterStream from "./LetterStream";
@@ -24,6 +24,8 @@ const TempoType = () => {
   );
   const [uppercase, setUppercase] = useState<boolean>(false);
   const [punctuation, setPunctuation] = useState<boolean>(false);
+
+  document.getElementById("start-screen")?.focus();
 
   return (
     <div tabIndex={0} style={containerStyle}>

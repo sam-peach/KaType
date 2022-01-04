@@ -12,6 +12,7 @@ function App() {
         display: "flex",
         flexDirection: "column",
       }}
+      onClick={() => document.getElementById("start-screen")?.focus()}
     >
       <Header />
       <div

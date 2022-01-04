@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, KeyboardEvent } from "react";
 import Options from "./Options";
 
 const style = (shouldFade: boolean): {} => {
@@ -51,18 +51,19 @@ const StartScreen = ({
 }) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
-  useEffect(() => {
-    document.getElementById("start-screen")?.focus();
-  }, []);
-
   return (
     <div style={style(clicked)} onTransitionEnd={afterStart}>
       <div
+        tabIndex={-1}
         id="start-screen"
-        onClick={() => setClicked(true)}
-        style={{ marginBottom: "10vh", fontSize: "36px" }}
+        onKeyDown={(e: KeyboardEvent) => {
+          if (e.key === " ") {
+            setClicked(true);
+          }
+        }}
+        style={{ marginBottom: "10vh", fontSize: "36px", fontWeight: 400 }}
       >
-        Click here to begin
+        Press space to begin
       </div>
       <Options
         speedMultiplier={speedMultiplier}

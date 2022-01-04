@@ -1,16 +1,16 @@
 import React from "react";
+import logo from "../logo.svg";
 
 const headerContainerStyle: {} = {
   display: "flex",
   position: "absolute",
-  margin: "0.5em 0.75em",
-  fontSize: "1.5em",
+  margin: "0.75em 0.75em",
 };
 
 const Header = () => {
   return (
     <div style={headerContainerStyle}>
-      <div>_ttype</div>
+      <img src={logo} alt="logo" />
     </div>
   );
 };
