@@ -4,7 +4,12 @@ import { Letter } from "../types/Letter";
 import LetterWrapper from "./LetterWrapper";
 import Box from "./Box";
 import ScoreBoard from "./ScoreBoard";
-import { bpmToMilliseconds, randomLetter, nextBigram } from "../utils";
+import {
+  bpmToMilliseconds,
+  randomLetter,
+  nextBigram,
+  randomPunctuation,
+} from "../utils";
 
 const style = (transition: boolean): {} => {
   const base = {
@@ -34,25 +39,43 @@ const LetterStream = ({
   speedMultiplier,
   gameLength,
   letterPattern,
+  uppercase,
+  punctuation,
 }: {
   bpm: number;
   onStop: (score: number) => void;
   speedMultiplier: number;
   gameLength: number;
   letterPattern: string;
+  uppercase: boolean;
+  punctuation: boolean;
 }) => {
   const { innerWidth, innerHeight } = window;
   const letterGenerator = useCallback(
     (currentLetter?: string): Letter => {
-      let letter = randomLetter();
+      if (punctuation && Math.random() > 0.9) {
+        return {
+          letter: randomPunctuation(),
+          offset: window.innerWidth / 4,
+          disabled: false,
+        };
+      } else {
+        let letter = randomLetter();
 
-      if (currentLetter && letterPattern === "Bigrams" && Math.random() > 0.3) {
-        letter = nextBigram(currentLetter);
+        if (
+          currentLetter &&
+          letterPattern === "Bigrams" &&
+          Math.random() > 0.2
+        ) {
+          letter = nextBigram(currentLetter);
+        }
+
+        letter =
+          uppercase && Math.random() > 0.5 ? letter.toUpperCase() : letter;
+        return { letter, offset: window.innerWidth / 4, disabled: false };
       }
-
-      return { letter, offset: window.innerWidth / 4, disabled: false };
     },
-    [letterPattern]
+    [letterPattern, punctuation, uppercase]
   );
 
   const [ticks, setTicks] = useState<number>(0);
@@ -66,6 +89,9 @@ const LetterStream = ({
   const [shouldStop, setShouldStop] = useState<boolean>(false);
 
   const handleKeypress = (e: KeyboardEvent) => {
+    if (e.repeat) {
+      return;
+    }
     const letter = letterStream.find((l) => {
       const position = innerWidth - l.offset;
       return (

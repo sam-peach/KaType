@@ -17,6 +17,10 @@ const Options = ({
   setGameLength,
   letterPattern,
   setLetterPattern,
+  uppercase,
+  setUppercase,
+  punctuation,
+  setPunctuation,
 }: {
   speedMultiplier: number;
   setSpeedMultiplier: (hewSpeed: number) => void;
@@ -25,6 +29,10 @@ const Options = ({
   setGameLength: (val: number) => void;
   letterPattern: string;
   setLetterPattern: (val: string) => void;
+  uppercase: boolean;
+  setUppercase: (val: boolean) => void;
+  punctuation: boolean;
+  setPunctuation: (val: boolean) => void;
 }) => {
   const handleSpeedMultiplierChange = useCallback(
     (e: MouseEvent<HTMLElement>) => {
@@ -76,8 +84,8 @@ const Options = ({
         className="options-row"
         style={{
           borderTop: "2px dashed #ffd76a",
-          padding: "8vh",
-          flex: "0 1 80%",
+          padding: "8vh 0",
+          flex: "1 1 100%",
         }}
       >
         <Option heading="Speed">
@@ -121,6 +129,36 @@ const Options = ({
           <span style={{ fontSize: "24px" }}>{letterPattern}</span>
           <span
             onClick={handleLetterPatternChange}
+            style={{ marginLeft: "0.75em" }}
+          >
+            {">"}
+          </span>
+        </Option>
+        <Option heading="Uppercase">
+          <span
+            onClick={() => setUppercase(!uppercase)}
+            style={{ marginRight: "0.75em" }}
+          >
+            {"<"}
+          </span>
+          <span style={{ fontSize: "24px" }}>{uppercase ? "Yes" : "No"}</span>
+          <span
+            onClick={() => setUppercase(!uppercase)}
+            style={{ marginLeft: "0.75em" }}
+          >
+            {">"}
+          </span>
+        </Option>
+        <Option heading="Punctuation">
+          <span
+            onClick={() => setPunctuation(!punctuation)}
+            style={{ marginRight: "0.75em" }}
+          >
+            {"<"}
+          </span>
+          <span style={{ fontSize: "24px" }}>{punctuation ? "Yes" : "No"}</span>
+          <span
+            onClick={() => setPunctuation(!punctuation)}
             style={{ marginLeft: "0.75em" }}
           >
             {">"}

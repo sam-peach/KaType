@@ -73,6 +73,15 @@ export const randomLetter = () => {
   return letter;
 };
 
+export const randomPunctuation = () => {
+  const punctuation = "~=!{}|`()_&@[]^*;-%+";
+  const character = punctuation.charAt(
+    Math.floor(((Math.random() + Math.random()) / 2) * punctuation.length)
+  );
+
+  return character;
+};
+
 export const nextBigram = (currentLetter: string) => {
   const nextLetterArray = BIGRAMS[currentLetter];
   return nextLetterArray[Math.floor(Math.random() * nextLetterArray.length)];

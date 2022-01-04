@@ -30,6 +30,10 @@ const StartScreen = ({
   setGameLength,
   letterPattern,
   setLetterPattern,
+  uppercase,
+  setUppercase,
+  punctuation,
+  setPunctuation,
 }: {
   afterStart: () => void;
   speedMultiplier: number;
@@ -40,6 +44,10 @@ const StartScreen = ({
   setGameLength: (val: number) => void;
   letterPattern: string;
   setLetterPattern: (val: string) => void;
+  uppercase: boolean;
+  setUppercase: (val: boolean) => void;
+  punctuation: boolean;
+  setPunctuation: (val: boolean) => void;
 }) => {
   const [clicked, setClicked] = useState<boolean>(false);
 
@@ -64,6 +72,10 @@ const StartScreen = ({
         setGameLength={setGameLength}
         letterPattern={letterPattern}
         setLetterPattern={setLetterPattern}
+        uppercase={uppercase}
+        setUppercase={setUppercase}
+        punctuation={punctuation}
+        setPunctuation={setPunctuation}
       />
     </div>
   );

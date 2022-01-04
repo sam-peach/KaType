@@ -23,7 +23,7 @@ const Option = ({
           justifyContent: "space-between",
         }}
       >
-        <div style={{ marginBottom: "1em" }}>{heading}</div>
+        <div style={{ marginBottom: "1em", fontSize: "18px" }}>{heading}</div>
         <div
           style={{
             display: "flex",

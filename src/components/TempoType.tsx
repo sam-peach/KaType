@@ -22,6 +22,8 @@ const TempoType = () => {
   const [letterPattern, setLetterPattern] = useState<string>(
     LETTER_PATTERNS.Random
   );
+  const [uppercase, setUppercase] = useState<boolean>(false);
+  const [punctuation, setPunctuation] = useState<boolean>(false);
 
   return (
     <div tabIndex={0} style={containerStyle}>
@@ -31,6 +33,8 @@ const TempoType = () => {
           speedMultiplier={speedMultiplier}
           letterPattern={letterPattern}
           gameLength={gameLength}
+          uppercase={uppercase}
+          punctuation={punctuation}
           onStop={(score: number) => {
             if (score > highScore) {
               setHighScore(score);
@@ -49,6 +53,10 @@ const TempoType = () => {
           setGameLength={setGameLength}
           letterPattern={letterPattern}
           setLetterPattern={setLetterPattern}
+          uppercase={uppercase}
+          setUppercase={setUppercase}
+          punctuation={punctuation}
+          setPunctuation={setPunctuation}
         />
       )}
     </div>
